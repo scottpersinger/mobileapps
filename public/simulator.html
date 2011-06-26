@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <script src="../jquery.mobile/jquery-1.6.1.min.js"></script>
+    <script type="text/javascript">
+      function resize_frame() {
+        var imgHeight = 721.0;
+        var imgWidth = 383.0;
+        var frameHeight = 459.0;
+        var frameWidth = 320.0;
+
+        var frameOffsetX = 31.0;
+        var frameOffsetY = 143.0;
+
+        var yScale = $('img').height() / imgHeight;
+        var xScale = $('img').width() / imgWidth;
+
+        var newpos = {top: (frameOffsetY * yScale), left: (frameOffsetX * xScale), 
+                        height: (frameHeight * yScale), width: (frameWidth * xScale)};
+        $('iframe').css(newpos);
+      }
+      
+      $(function() {
+          $('img').load(resize_frame);
+      });
+      
+      $(window).resize(resize_frame);
+    </script>
+  </head>
+<body>
+  <div style="width:100%;text-align:center;position:relative">
+    <div style="position:absolute;top:10px;left:10px">
+      <p><a href="#" onclick="$('iframe').attr('src', 'http://localhost:8000/demos/main'); return false">Main demo</a></p>
+      <p><a href="#" onclick="$('iframe').attr('src', 'http://localhost:8000/mobileapps/tcjqt.html'); return false">Techcrunch demo</a></p>
+    </div>
+    <div style="position:relative;height:100%;max-height:721px;margin:10px auto;width:383px">
+      <img src="iphone.png" style="position:absolute;top:0px;left:0px;height:100%" />
+      <iframe src="http://localhost:8000/mobileapps/tcjqt.html"
+        style="position:absolute;top:0;left:0;height:60%;width:100px;overflow:hidden" scrolling="no" />
+  </div>
+</body>
+</html>
+

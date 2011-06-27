@@ -7,8 +7,20 @@ Storage.prototype.setObject = function(key, value) {
     this.setItem(key, JSON.stringify(value));
 }
 
-Storage.prototype.getObject = function(key) {
-    return JSON.parse(this.getItem(key));
+Storage.prototype.getObject = function(key, demarshal) {
+    var result = JSON.parse(this.getItem(key));
+    if (demarshal && result && typeof(result.length) != "undefined") {
+      result = $.map(result, demarshal);
+    }
+    return result;
+}
+
+Date.prototype.datesEqual = function(other) {
+  if (other && typeof(other) == 'object') {
+    return this.toDateString() == other.toDateString();
+  } else {
+    return false;
+  }
 }
 
 function tc_scrape() {
@@ -40,8 +52,8 @@ function load_tc_home(callback) {
   //tcurl = 'http://localhost:8000/jqtouch-bee/test/techcrunch.html';
   
   debug("Loading Techcrunch home page");
-  var scrapeUrl = 'http://' + window.location.hostname + ':8080/scrape';
-  scrapeUrl = 'http://simple-cloud-843.herokuapp.com/scrape'
+  var scrapeUrl = localStorage.getItem('scrapeUrl');
+  scrapeUrl = scrapeUrl || 'http://simple-cloud-843.herokuapp.com/scrape';
   
   $.post(scrapeUrl, 
     {url:tcurl, 
@@ -52,9 +64,19 @@ function load_tc_home(callback) {
      if (errorThrown) {
        errorThrown = errorThrown.message;
      }
-     alert('TC scrape error: ' + textStatus + ': ' + errorThrown);
+     alert('TC scrape error (' + scrapeUrl + '): ' + textStatus + ': ' + errorThrown);
    });
 }
+
+function run_locally(flag) {
+  if (flag) {
+    localStorage.setItem('scrapeUrl', 'http://localhost:8080/scrape');
+  } else {
+    localStorage.removeItem('scrapeUrl');
+  }
+  
+}
+
 function clear_storage() {
   localStorage.removeItem('posts');
   localStorage.removeItem('urls');
@@ -65,15 +87,32 @@ function debug(msg) {
   //$.get('http://localhost:8080/log', {msg: msg});
 }
 
+function demarshal_post(post) {
+  post.date = new Date(Date.parse(post.date));
+  return post;
+}
+
+// posts is an array stored locally with our current set of stories in reverse
+// chron order. To maintain the order, we prepend new stories to the array.
+
 function loadPosts(items, postBuilder) {
   console.log("loadPosts");
   
-  var posts = localStorage.getObject('posts') || [];
+  var posts = localStorage.getObject('posts', demarshal_post) || [];
   var urls = localStorage.getObject('urls') || {};
 
+  // items is newest first, latest last. So process them in reverse order
+  // and prepend to the posts array.
   $.each(items.reverse(), function() {
     if (!urls[this.url]) {
-      posts.push(this);
+      var m;
+      if ((m = this.url.match(/20\d\d\/\d\d\/\d\d/))) {
+        this.date = new Date(Date.parse(m[0]));
+      } else {
+        this.date = new Date();
+      }
+      
+      posts.unshift(this);
       urls[this.url] = 'x';
     }
   });

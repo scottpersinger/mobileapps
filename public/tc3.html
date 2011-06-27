@@ -80,23 +80,25 @@
             #jqt.fullscreen #home .info {
                 display: none;
             }
-            div#jqt #about {
-                padding: 100px 10px 40px;
-                text-shadow: rgba(255, 255, 255, 0.3) 0px -1px 0;
-                font-size: 13px;
-                text-align: center;
-                background: #161618;
-            }
-            div#jqt #about p {
-                margin-bottom: 8px;
-            }
-            div#jqt #about a {
-                color: #fff;
-                font-weight: bold;
-                text-decoration: none;
-            }
             div#jqt #story-content {
               background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFFFFF), to(#EDEDED));
+            }
+            /* allow stories titles to use multiple lines */
+            #jqt ul li a {
+              white-space: normal;
+            }
+            
+            #jqt ul li {
+              position:relative;
+            }
+            
+            .author {
+              font-size:0.8em;
+              font-style:italic;
+              color:#999;
+              position:absolute;
+              right:4px;
+              bottom:4px;
             }
         </style>
     </head>
@@ -105,30 +107,25 @@
             <div id="home" class="current">
                 <div class="toolbar">
                     <h1>TechCrunch</h1>
-                    <a class="button flip" id="infoButton" href="#about">About</a>
+                    <a class="button slideup" id="infoButton" href="#more">More</a>
                 </div>
                 <div id="stories" class="s-scrollwrapper" momentum="true" vScrollbar="false">
                   <ul id="posts" class="edgetoedge">
-                      <!--li class="sep">F</li>
-                      <li><a href="#">Flintstone, <em>Fred</em></a></li>
-                      <li><a href="#">Flintstone, <em>Pebble</em></a></li>
-                      <li><a href="#">Flintstone, <em>Wilma</em></a></li>
-                      <li class="sep">J</li>
-                      <li><a href="#">Jetson, <em>Elroy</em></a></li>
-                      <li><a href="#">Jetson, <em>George</em></a></li>
-                      <li><a href="#">Jetson, <em>Jane</em></a></li>
-                      <li><a href="#">Jetson, <em>Judy</em></a></li>
-                      <li class="sep">R</li>
-                      <li><a href="#">Rubble, <em>Bambam</em></a></li>
-                      <li><a href="#">Rubble, <em>Barney</em></a></li>
-                      <li><a href="#">Rubble, <em>Betty</em></a></li-->
                   </ul>
                 </div>
             </div>
-            <div id="about" class="selectable">
-                    <p><img src="jqtouch.png" /></p>
-                    <p><strong>H5 TechCrunch App<br />Version 0.1 beta</strong><br />
-                    <p><br /><br /><a href="#" class="grayButton goback">Close</a></p>
+            <div id="more" class="">
+                <div class="toolbar">
+                    <h1>Menu</h1>
+                    <a class="button goback" href="#">Close</a>
+                </div>
+                <div>
+                  <ul class="rounded">
+                    <li><a id="reload" class="whiteButton">Reload</a></li>
+                    <li><a id="reset" class="whiteButton">Reset</a></li>
+                    <li>Dev mode <span class="toggle"><input id="devmode" type="checkbox" /></span></li>
+                  </ul>
+                </div>
             </div>
             
             <div id="fullstory">
@@ -162,6 +159,10 @@
             </div>
             
         </div>
+        <div id="msgbox" style="display:none;position:absolute;bottom:4px;left:4px;z-index:999;padding:3px 8px;
+          opacity:0.7;background-color:#DDD;border:1px solid #CCC">
+          <img src="indicator.gif" style="vertical-align:middle" /> <span id="message"></span>
+        </div>
         <script>
           var SUPPORT_TOUCH = (typeof Touch != "undefined");
           var START_EVENT = SUPPORT_TOUCH? 'touchstart' : 'mousedown';
@@ -174,11 +175,12 @@
             var postsDiv = $('#posts');
 
             console.log(post.date + " - " + post.title);
-            if (post.date != lastDate) {
+            if (post.date && !post.date.datesEqual(lastDate)) {
               lastDate = post.date;
-              postsDiv.append('<li class="sep">' + post.date + '</li>');
+              postsDiv.append('<li class="sep">' + post.date.toLocaleDateString() + '</li>');
             }
-            postsDiv.append('<li class="arrow" style="font-size:0.8em"><a href="#fullstory">' + post.title + '</a></li>');
+            postsDiv.append('<li class="arrow" style="font-size:0.8em"><a href="#fullstory">' + post.title + '</a>' +
+              '<span class="author">' + post.author  +'</span></li>');
 
             $('#posts a:last').bind(START_EVENT, function() {
               $('#story-title').html(post.title);
@@ -187,16 +189,49 @@
               //jQT.goTo('#fullstory');
             });
           }
+
+          function show_message(msg) {
+            $('#message').html(msg);
+            $('#msgbox').show();
+          }
+          
+          function hide_message() {
+            $('#msgbox').hide();
+          }
           
           $(function() {
             $('#story-content').swipe(function(evt, data) {
               console.log("Swipe on story");
               jQT.goBack();
             });
-
+            $('#reload').click(function() {
+              window.location.reload();
+            });
+            $('#reset').click(function() {
+              clear_storage();
+              window.location.reload();
+            });
+            if (localStorage.getItem('devmode')) {
+              $('#devmode').attr('checked',true);
+            }
+            $('#devmode').change(function() {
+              if ($(this).val()) {
+                localStorage.setItem('devmode', 'true');
+                run_locally(true);
+              } else {
+                localStorage.removeItem('devmode');
+                run_locally(false);
+              }
+            });
             
             loadPosts([], postBuilder);
+            $('#msgbox').ajaxError(function() {
+              hide_message();
+            });
+            
+            show_message('Loading stories...');
             load_tc_home(function(results) {
+              hide_message();
               loadPosts(results, postBuilder);
             });
           });

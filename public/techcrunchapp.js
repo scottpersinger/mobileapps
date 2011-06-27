@@ -41,12 +41,19 @@ function load_tc_home(callback) {
   
   debug("Loading Techcrunch home page");
   var scrapeUrl = 'http://' + window.location.hostname + ':8080/scrape';
+  scrapeUrl = 'http://simple-cloud-843.herokuapp.com/scrape'
+  
   $.post(scrapeUrl, 
     {url:tcurl, 
      body:body}, function(res) {
        console.log(res);
        callback(res);
-  }).error(function() {alert('error occurred scraping TC home page: ' + scrapeUrl);});
+  }).error(function(jqXHR, textStatus, errorThrown) {
+     if (errorThrown) {
+       errorThrown = errorThrown.message;
+     }
+     alert('TC scrape error: ' + textStatus + ': ' + errorThrown);
+   });
 }
 function clear_storage() {
   localStorage.removeItem('posts');

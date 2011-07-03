@@ -123,21 +123,19 @@ function BlogReader(db) {
      });
   }
 
-  function loadStory(url, elt) {
+  function loadStory(url, callback) {
     var scrapeUrl = localStorage.getItem('scrapeUrl');
     scrapeUrl = scrapeUrl || 'http://simple-cloud-843.herokuapp.com/scrape';
     
     var uid = Utils.hash(url, 999999);
     db.select_all('stories', {where: {uid: uid}}, function(results) {
       if (results.length > 0) {
-        console.log("Setting story content to: " + elt);
-        $(elt).html(results[0].body);
+        callback(results[0].body);
       } else {
         $.post(scrapeUrl,
-            {url: url, body: "return $('#singlentry').text()" },
+            {url: url, body: "return $('#singlentry').html()" },
             function(res) {
-              console.log("Setting story content to: " + elt);
-              $(elt).html(res);
+              callback(res);
               story = {uid: uid, body: res};
               db.save('stories', story);
             }
@@ -157,7 +155,8 @@ function BlogReader(db) {
   }
 
   function clear_storage() {
-    db.delete_all('posts');
+    db.drop_table('posts');
+    db.drop_table('stories');
   }
 
   function debug(msg) {

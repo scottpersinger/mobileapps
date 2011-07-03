@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html manifest="tc3.manifest">
     <head>
         <meta charset="UTF-8" />
         <title>TechCrunch</title>
@@ -11,6 +11,7 @@
         <script src="jqtouch-dz/jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
         <!-- for scrolling -->
         <script src="jqtouch-dz/extensions/jqt.bars/jqt.bars.js" type="application/x-javascript" charset="utf-8"></script>
+        <script src="jqtouch-dz/extensions/jqt.offline.js" type="application/x-javascript" charset="utf-8"></script>
         
         <script src="techcrunchapp.js" type="text/javascript"></script>
         <script src="storage.js" type="text/javascript"></script>
@@ -205,8 +206,15 @@
               $('#story-title').html(post.title);
               $("#story-content").html(post.body);
               $('#story-content img').remove();
+              $('#loadButton').unbind('click');
               jQT.refresh_iScroll();
-              techcrunch.loadStory(post.url, '#story-content');
+              techcrunch.loadStory(post.url, function(body) {
+                body = body.replace(/<object.*?\/(object)?>/igm, '').replace(/<script.*?\/(script)?>/igm, '').replace(/<embed.*?\/(embed)?>/igm, '').replace(/<iframe.*?\/(iframe>)?/igm, '');
+                
+                //console.log(body);
+                $('#story-content').html('<p>' + body + '</p>');
+                $('#story-content img, #story-content script, #story-content noscript').remove();
+              });
             });
           }
 
@@ -219,16 +227,16 @@
             $('#msgbox').hide();
           }
           
+          function reload() {
+            show_message('Loading stories...');
+            techcrunch.loadNewPosts(postBuilder, function() {
+              jQT.setPageHeight();                
+              hide_message();
+            });
+          }
           
           // Onload
           $(function() {
-            $('#loadButton').click(function() {
-              show_message('Loading stories...');
-              techcrunch.loadNewPosts(postBuilder, function() {
-                hide_message();
-              });
-            });
-            
             // Story swipe
             $('#story-content').swipe(function(evt, data) {
               jQT.goBack();
@@ -240,6 +248,7 @@
             // Reset button
             $('#reset').click(function() {
               techcrunch.reset();
+              applicationCache.update();
               window.location.reload();
             });
             // Dev mode
@@ -260,10 +269,23 @@
               hide_message();
             });
 
+            $('#fullstory').bind('pageAnimationEnd', function(e, info){
+              if (info.direction == "out") {
+                $('#fullstory .s-scrollwrapper').data('iscroll').scrollTo(0,0,0);
+                setTimeout(function() {
+                  console.log("Rebinding loadButton");
+                  $('#loadButton').click(reload);
+                }, 0);
+              }
+            });
+            
+            $('#loadButton').click(reload);
+            
             $storage = Storage('blogs', 2*1024*1024, function(db) {
               techcrunch = BlogReader(db);
               
               techcrunch.loadStoredPosts(postBuilder, function() {
+                jQT.setPageHeight();                
                 hide_message();
               });
             });

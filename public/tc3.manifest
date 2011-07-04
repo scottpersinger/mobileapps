@@ -1,6 +1,10 @@
 CACHE MANIFEST 
+# Version: 0.28
+
 
 tc3.html
+jqtouch.png
+jqt_startup.png
 jqtouch-dz/jqtouch/jqtouch.css
 jqtouch-dz/themes/apple/theme.css
 jqtouch-dz/extensions/jqt.bars/jqt.bars.css
@@ -21,6 +25,8 @@ jqtouch-dz/themes/apple/img/toolButton.png
 jqtouch-dz/themes/apple/img/backButton.png
 jqtouch-dz/themes/apple/img/listArrowSel.png
 jqtouch-dz/themes/apple/img/chevron.png
+jqtouch-dz/themes/apple/img/whiteButton.png
+jqtouch-dz/themes/apple/img/on_off.png
 indicator.gif
 techcrunchapp.js
 storage.js
@@ -30,4 +36,8 @@ jqtouch-dz/extensions/jqt.bars/jqt.bars.js
 jqtouch-dz/extensions/jqt.offline.js
 jqtouch-dz/extensions/jqt.bars/iscroll-lite-min.js
 
-
+NETWORK:
+http://localhost:8080
+http://localhost:8080/scrape
+http://simple-cloud-843.herokuapp.com/
+http://simple-cloud-843.herokuapp.com/scrape

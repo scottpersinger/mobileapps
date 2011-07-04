@@ -26,6 +26,7 @@
         <script src="jqtouch-dz/jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
         <!-- for scrolling -->
         <script src="jqtouch-dz/extensions/jqt.bars/jqt.bars.js" type="application/x-javascript" charset="utf-8"></script>
+        <script src="jqtouch-dz/extensions/jqt.bars/iscroll-lite-min.js" type="application/x-javascript" charset="utf-8"></script>
         <!--script src="jqtouch-dz/extensions/jqt.offline.js" type="application/x-javascript" charset="utf-8"></script-->
         
         <script src="techcrunchapp.js" type="text/javascript"></script>
@@ -53,6 +54,8 @@
                     ],
                 useFastTouch: true    
             });
+            
+            
             // Some sample Javascript functions:
             $(function(){
                 // Show a swipe event on swipe test
@@ -253,6 +256,8 @@
           
           // Onload
           $(function() {
+            jQT.barsSettings.autoLoad_iScroll = false;
+            
             setInterval(function() {
               $.each(logs, function(index, line) {
                 $('#logs').append(line + "\n");

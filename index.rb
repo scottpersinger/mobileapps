@@ -8,6 +8,7 @@ get '/cache.manifest' do
   puts "Sintra cache manifest"
   contents = File.read('public/cache.manifest.source')
   if ENV['DEBUG']
+    puts "Rotating manifest"
     contents.gsub!(/# Version: [\d\.]+/,"# Version: #{Time.now.to_i / 10}")
   end
 

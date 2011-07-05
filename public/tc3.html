@@ -99,14 +99,21 @@
               margin-bottom:0.2em;
             }
             
+            #story-content img {
+              width:75px;
+              float:right;
+              box-shadow: 3px 3px 5px #888;
+            }
+            
             #posts img {
               float:left;
               width:50px;
               margin-right:4px;
+              box-shadow: 2px 2px 2px #AAA;
             }
             
             #posts .title {
-              margin-left:54px;
+              margin-left:56px;
               display:block;
             }
             
@@ -198,7 +205,6 @@
               // }
             }
             var imgSrc = $(post.body).find('img').attr('src');
-            Utils.debug("imgSrc: " + imgSrc);
             var imgTag = imgSrc ? ('<img src="' + imgSrc + '" class="thumb" />') : '';
             var postText = '<li class="arrow" style="font-size:0.8em"><a id="' + post.uid + '" href="#fullstory">' + 
                 imgTag + '<span class="title">' + post.title + '</span></a>' + '<span class="author">' + post.author  +'</span></li>';
@@ -217,6 +223,7 @@
               $('#story-title').html(post.title);
               $("#story-content").html(post.body);
               $('#story-content img').remove();
+              $("#story-content").prepend(imgTag);
               $('#loadButton').unbind('click');
               jQT.setPageHeight();
               techcrunch.loadStory(post.url, function(body) {
@@ -225,6 +232,7 @@
                 //console.log(body);
                 $('#story-content').html('<p>' + body + '</p>');
                 $('#story-content img, #story-content script, #story-content noscript').remove();
+                $("#story-content").prepend(imgTag);
               });
             });
           }

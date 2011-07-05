@@ -100,16 +100,22 @@
             }
             
             #story-content img {
-              width:75px;
+              height:60px;
               float:right;
               box-shadow: 3px 3px 5px #888;
             }
             
-            #posts img {
+            #posts .imgholder {
               float:left;
               width:50px;
+              height:50px;
+              overflow:hidden;
               margin-right:4px;
               box-shadow: 2px 2px 2px #AAA;
+            }
+            
+            #posts img {
+              height:60px;
             }
             
             #posts .title {
@@ -207,7 +213,7 @@
             var imgSrc = $(post.body).find('img').attr('src');
             var imgTag = imgSrc ? ('<img src="' + imgSrc + '" class="thumb" />') : '';
             var postText = '<li class="arrow" style="font-size:0.8em"><a id="' + post.uid + '" href="#fullstory">' + 
-                imgTag + '<span class="title">' + post.title + '</span></a>' + '<span class="author">' + post.author  +'</span></li>';
+                '<div class="imgholder">' + imgTag + '</div><span class="title">' + post.title + '</span></a>' + '<span class="author">' + post.author  +'</span></li>';
             if (prepend) {
               var dateSep = postsDiv.find('.sep:first');
               if (dateSep.length > 0) {
@@ -233,6 +239,7 @@
                 $('#story-content').html('<p>' + body + '</p>');
                 $('#story-content img, #story-content script, #story-content noscript').remove();
                 $("#story-content").prepend(imgTag);
+                jQT.setPageHeight();
               });
             });
           }

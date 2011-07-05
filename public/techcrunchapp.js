@@ -25,6 +25,12 @@ var Utils = Utils || {};
 
 Utils.benchmarks = {};
 
+Utils.debug = function() {
+  var msg = Array.prototype.slice.call(arguments).join("");
+  console.log();
+  logs.push(msg);
+}
+
 Utils.bench_start = function(key) {
   Utils.benchmarks[key] = new Date();
 }

@@ -198,6 +198,7 @@
               // }
             }
             var imgSrc = $(post.body).find('img').attr('src');
+            Utils.debug("imgSrc: " + imgSrc);
             var imgTag = imgSrc ? ('<img src="' + imgSrc + '" class="thumb" />') : '';
             var postText = '<li class="arrow" style="font-size:0.8em"><a id="' + post.uid + '" href="#fullstory">' + 
                 imgTag + '<span class="title">' + post.title + '</span></a>' + '<span class="author">' + post.author  +'</span></li>';

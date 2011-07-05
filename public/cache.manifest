@@ -41,3 +41,5 @@ http://localhost:8080
 http://localhost:8080/scrape
 http://simple-cloud-843.herokuapp.com/
 http://simple-cloud-843.herokuapp.com/scrape
+http://*
+https://*

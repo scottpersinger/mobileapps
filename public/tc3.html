@@ -1,5 +1,5 @@
 <!doctype html>
-<html manifest="cache.manifest">
+<html manifest="nocache.manifest">
     <head>
         <meta charset="UTF-8" />
         <title>TechCrunch</title>
@@ -34,10 +34,10 @@
 
         <script type="text/javascript" charset="utf-8">
             var jQT = new $.jQTouch({
-                icon: 'jqtouch.png',
-                icon4: 'jqtouch4.png',
+                icon: 'tclogo.png',
+                icon4: 'tclogo.png',
                 addGlossToIcon: false,
-                startupScreen: 'jqt_startup.png',
+                //startupScreen: 'jqt_startup.png',
                 statusBar: 'black',
                 preloadImages: [
                     'jqtouch-dz/themes/jqt/img/activeButton.png',
@@ -68,32 +68,6 @@
                     $(this).parent().after('<li>tapped!</li>')
                 })
 
-                // Page animation callback events
-                $('#pageevents').
-                    bind('pageAnimationStart', function(e, info){ 
-                        $(this).find('.info').append('Started animating ' + info.direction + '&hellip; ');
-                    }).
-                    bind('pageAnimationEnd', function(e, info){
-                        $(this).find('.info').append(' finished animating ' + info.direction + '.<br /><br />');
-                    });
-                // Page animations end with AJAX callback event, example 1 (load remote HTML only first time)
-                $('#callback').bind('pageAnimationEnd', function(e, info){
-                    // Make sure the data hasn't already been loaded (we'll set 'loaded' to true a couple lines further down)
-                    if (!$(this).data('loaded')) {
-                        // Append a placeholder in case the remote HTML takes its sweet time making it back
-                        // Then, overwrite the "Loading" placeholder text with the remote HTML
-                        $(this).append($('<div>Loading</div>').load('ajax.html .info', function() {        
-                            // Set the 'loaded' var to true so we know not to reload
-                            // the HTML next time the #callback div animation ends
-                            $(this).parent().data('loaded', true);  
-                        }));
-                    }
-                });
-                // Orientation callback event
-                $('#jqt').bind('turn', function(e, data){
-                    $('#orient').html('Orientation: ' + data.orientation);
-                });
-                
             });
         </script>
         <style type="text/css" media="screen">
@@ -123,6 +97,21 @@
             
             #story-content p {
               margin-bottom:0.2em;
+            }
+            
+            #posts img {
+              float:left;
+              width:50px;
+              margin-right:4px;
+            }
+            
+            #posts .title {
+              margin-left:54px;
+              display:block;
+            }
+            
+            #jqt ul li.arrow {
+              background-image: none;
             }
         </style>
     </head>
@@ -208,8 +197,10 @@
               //   postsDiv.prepend('<li class="sep">' + post.date.toLocaleDateString() + '</li>');
               // }
             }
+            var imgSrc = $(post.body).find('img').attr('src');
+            var imgTag = imgSrc ? ('<img src="' + imgSrc + '" class="thumb" />') : '';
             var postText = '<li class="arrow" style="font-size:0.8em"><a id="' + post.uid + '" href="#fullstory">' + 
-                post.title + '</a>' + '<span class="author">' + post.author  +'</span></li>';
+                imgTag + '<span class="title">' + post.title + '</span></a>' + '<span class="author">' + post.author  +'</span></li>';
             if (prepend) {
               var dateSep = postsDiv.find('.sep:first');
               if (dateSep.length > 0) {
@@ -226,7 +217,7 @@
               $("#story-content").html(post.body);
               $('#story-content img').remove();
               $('#loadButton').unbind('click');
-              jQT.refresh_iScroll();
+              jQT.setPageHeight();
               techcrunch.loadStory(post.url, function(body) {
                 body = body.replace(/<object.*?\/(object)?>/igm, '').replace(/<script.*?\/(script)?>/igm, '').replace(/<embed.*?\/(embed)?>/igm, '').replace(/<iframe.*?\/(iframe>)?/igm, '');
                 
@@ -311,6 +302,7 @@
             
             $storage = Storage('blogs', 2*1024*1024, function(db) {
               techcrunch = BlogReader(db);
+              setTimeout(reload, 100);
               
               techcrunch.loadStoredPosts(postBuilder, function() {
                 jQT.setPageHeight();                

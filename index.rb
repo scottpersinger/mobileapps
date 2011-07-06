@@ -31,7 +31,7 @@ get '/resize' do
   if imgs[0]
     img = imgs[0]
     content_type "image/#{img.format.downcase}"
-    header {'Cache-Control' => 'max-age=2592000'}
+    header({'Cache-Control' => 'max-age=2592000'})
     img.crop_resized(width, height, Magick::CenterGravity).to_blob
   else
     ""

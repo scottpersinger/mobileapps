@@ -32,6 +32,7 @@ get '/resize' do
     response['Cache-Control'] = 'max-age=2592000'
     img = imgs[0]
     content_type "image/#{img.format.downcase}"
+    img.quality = 60
     img.crop_resized(width, height, Magick::CenterGravity).to_blob
   else
     ""

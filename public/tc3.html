@@ -240,10 +240,16 @@
                 $('#story-content img, #story-content script, #story-content noscript').remove();
                 $("#story-content").prepend(imgTag);
                 jQT.setPageHeight();
+                link_subpages();
               });
             });
           }
 
+          function link_subpages() {
+            $('#story-content a').click(function() {
+              alert("Nav to: " + $(this).attr('href'));
+            })
+          }
           function show_message(msg) {
             $('#message').html(msg);
             $('#msgbox').show();

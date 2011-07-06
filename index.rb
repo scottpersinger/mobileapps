@@ -1,4 +1,7 @@
 require 'sinatra'
+require 'open-uri'
+require "RMagick"
+require 'ruby-debug'
 
 get '/' do
   File.read('public/index.html')
@@ -16,3 +19,17 @@ get '/cache.manifest' do
   contents
 end
 
+get '/resize' do
+  debugger
+  url = params[:url]
+  puts "Resizing: #{url}"
+  data = open(url).read
+  imgs = Magick::Image.from_blob(data)
+  if imgs[0]
+    img = imgs[0]
+    content_type "image/#{img.format.downcase}"
+    img.to_blob
+  else
+    ""
+  end
+end

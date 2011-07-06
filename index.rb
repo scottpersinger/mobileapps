@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'rest-open-uri'
 require "RMagick"
-require 'ruby-debug'
 
 get '/' do
   File.read('public/index.html')
@@ -20,7 +19,6 @@ get '/cache.manifest' do
 end
 
 get '/resize' do
-  debugger
   url = params[:url]
   puts "Resizing: #{url}"
   data = open(url).read

@@ -26,7 +26,7 @@ get '/resize' do
   if imgs[0]
     img = imgs[0]
     content_type "image/#{img.format.downcase}"
-    img.orig.crop_resized(25, 25, Magick::CenterGravity).to_blob
+    img.crop_resized(25, 25, Magick::CenterGravity).to_blob
   else
     ""
   end

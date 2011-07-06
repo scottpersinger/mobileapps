@@ -22,8 +22,8 @@ get '/resize' do
   url = params[:url]
   dim = params[:dim] || "25x25"
   
-  width = dim[/^\d+/,0]
-  height = dim[/\d+$/,0]
+  width = dim[/^\d+/,0].to_i
+  height = dim[/\d+$/,0].to_i
   
 #  puts "Resizing: #{url}"
   data = open(url).read

@@ -20,13 +20,19 @@ end
 
 get '/resize' do
   url = params[:url]
+  dim = params[:dim] || "25x25"
+  
+  width = dim[/^\d+/,0]
+  height = dim[/\d+$/,0]
+  
   puts "Resizing: #{url}"
   data = open(url).read
   imgs = Magick::Image.from_blob(data)
   if imgs[0]
     img = imgs[0]
     content_type "image/#{img.format.downcase}"
-    img.crop_resized(25, 25, Magick::CenterGravity).to_blob
+    header {'Cache-Control' => 'max-age=2592000'}
+    img.crop_resized(width, height, Magick::CenterGravity).to_blob
   else
     ""
   end

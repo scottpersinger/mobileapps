@@ -1,5 +1,5 @@
 require 'sinatra'
-require 'open-uri'
+require 'rest-open-uri'
 require "RMagick"
 require 'ruby-debug'
 

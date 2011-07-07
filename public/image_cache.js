@@ -19,8 +19,8 @@ var ImageCache = {
       } else {
         canv = canv[0];
       }
-      canv.style.width = width;
-      canv.style.height = height;
+      canv.style.width = width * 2;
+      canv.style.height = height * 2;
       var context = canv.getContext('2d');
       context.drawImage(img, 0, 0, width, height);
     

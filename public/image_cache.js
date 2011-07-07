@@ -26,4 +26,8 @@ var ImageCache = {
       localStorage.setItem(key, dataURL);
     }   
   }
+  
+  image_src: function(img_src) {
+    return localStorage.getItem(img_src) || img_src;
+  }
 }

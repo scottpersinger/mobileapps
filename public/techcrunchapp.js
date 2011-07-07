@@ -177,7 +177,7 @@ function BlogReader(db) {
   // chron order. To maintain the order, we prepend new stories to the array.
 
   function loadStoredPosts(postBuilder, completion) {
-    db.select_all('posts', {order:{'id': 'desc'}}, function(posts) {
+    db.select_all('posts', {order:{'id': 'desc'}, limit:30}, function(posts) {
       $posts = posts;
       $.each(posts, function() {
         $uids[this.uid] = true;

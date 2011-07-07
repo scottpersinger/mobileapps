@@ -160,8 +160,9 @@ function Storage(db_name, size, options, callback) /** @lends Storage */
         db.transaction(function(tx) {
           var where = build_where_clause(options.where);
           var order = build_order_clause(options.order);
+          var limit = options.limit ? ("LIMIT " + options.limit) : '';
           
-          executeSqlLog(tx, "SELECT * FROM " + table + " " + where + " " + order, [], function(tx, results) {
+          executeSqlLog(tx, "SELECT * FROM " + table + " " + where + " " + order + " " + limit, [], function(tx, results) {
             callback(reify_results(results, schema));
           }, function(tx, err) {
             // special hack to allow us to select from a table that doesn't exist yet

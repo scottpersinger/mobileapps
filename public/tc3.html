@@ -225,6 +225,7 @@
             var imgSrc = $(post.body).find('img').attr('src');
             if (imgSrc) {
               imgSrc = 'http://tc.gouplevel.com/resize?url=' + encodeURIComponent(imgSrc) + "&dim=60x60";
+              imgSrc = ImageCache.image_src(imgSrc);
             }
             var imgTag = imgSrc ? ('<img src="' + imgSrc + '" id="' + post.uid + '-thumb" onload="ImageCache.cache(this)" class="thumb" />') : '';
             var postText = '<li class="arrow" style="font-size:0.8em"><a id="' + post.uid + '" href="#fullstory">' + 

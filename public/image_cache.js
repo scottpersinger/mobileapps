@@ -8,6 +8,7 @@ var ImageCache = {
   cache : function(img) {
     var key = img.src;
     if (!localStorage.getItem('key')) {
+      console.log("Caching: " + key);
       var canv = $('#img-cache-canvas');
       if (canv.length == 0) {
         canv = document.createElement("canvas");

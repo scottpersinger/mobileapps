@@ -226,7 +226,7 @@
             if (imgSrc) {
               imgSrc = 'http://tc.gouplevel.com/resize?url=' + encodeURIComponent(imgSrc) + "&dim=60x60";
             }
-            var imgTag = imgSrc ? ('<img src="' + imgSrc + '" id="' + post.uid + '-thumb" class="thumb" />') : '';
+            var imgTag = imgSrc ? ('<img src="' + imgSrc + '" id="' + post.uid + '-thumb" onload="ImageCache.cache(this)" class="thumb" />') : '';
             var postText = '<li class="arrow" style="font-size:0.8em"><a id="' + post.uid + '" href="#fullstory">' + 
                 '<div class="imgholder">' + imgTag + '</div><span class="title">' + post.title + '</span></a>' + '<span class="author">' + post.author  +'</span></li>';
             if (prepend) {
@@ -236,10 +236,6 @@
               } else {
                 postsDiv.prepend(postText);
               }
-              $('#' + post.uid + '-thumb').load(function() {
-                console.log("Caching image:" + this.src);
-                ImageCache.cache(this);
-              });
             } else {
               postsDiv.append(postText);
             }

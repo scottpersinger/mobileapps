@@ -7,7 +7,7 @@
 var ImageCache = {
   cache : function(img) {
     var key = img.src;
-    if (!localStorage.getItem('key')) {
+    if (key.match(/^http:/) && !localStorage.getItem('key')) {
       console.log("Caching: " + key);
       var canv = $('#img-cache-canvas');
       if (canv.length == 0) {

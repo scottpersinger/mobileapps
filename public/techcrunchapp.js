@@ -163,6 +163,9 @@ function BlogReader(db) {
   function clear_storage() {
     db.drop_table('posts');
     db.drop_table('stories');
+    for (var i = 0; i < localStorage.length; i++) {
+      localStorage.removeItem(localStorage.key(i));
+    }
   }
 
   function debug(msg) {

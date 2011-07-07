@@ -25,9 +25,11 @@ var ImageCache = {
       var dataURL = canv.toDataURL();
       localStorage.setItem(key, dataURL);
     }   
-  }
+  },
   
   image_src: function(img_src) {
     return localStorage.getItem(img_src) || img_src;
-  }
+  },
+  
+  VERSION:0.1
 }

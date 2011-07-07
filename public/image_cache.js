@@ -7,8 +7,10 @@
 var ImageCache = {
   cache : function(img, width, height) {
     var key = img.src;
+    width = width || img.width;
+    height = height || img.height;
     if (key.match(/^http:/) && !localStorage.getItem('key')) {
-      console.log("Caching: " + key);
+      console.log("Caching: " + key + " at size " + width + " x " + height);
       var canv = $('#img-cache-canvas');
       if (canv.length == 0) {
         canv = document.createElement("canvas");
@@ -17,10 +19,10 @@ var ImageCache = {
       } else {
         canv = canv[0];
       }
-      canv.style.width = img.width;
-      canv.style.height = img.height;
+      canv.style.width = width;
+      canv.style.height = height;
       var context = canv.getContext('2d');
-      context.drawImage(img, 0, 0, width || img.width, height || img.height);
+      context.drawImage(img, 0, 0, width, height);
     
       var dataURL = canv.toDataURL();
       localStorage.setItem(key, dataURL);

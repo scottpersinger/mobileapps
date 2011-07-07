@@ -29,7 +29,7 @@ get '/resize' do
   data = open(url).read
   imgs = Magick::Image.from_blob(data)
   if imgs[0]
-    response['Cache-Control'] = 'max-age=2592000'
+    response['Cache-Control'] = 'max-age=0'  #2592000
     response['access-control-allow-origin'] = "*"
     response['access-control-allow-credentials'] = "true"
     

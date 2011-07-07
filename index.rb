@@ -30,6 +30,9 @@ get '/resize' do
   imgs = Magick::Image.from_blob(data)
   if imgs[0]
     response['Cache-Control'] = 'max-age=2592000'
+    response['access-control-allow-origin'] = "*"
+    response['access-control-allow-credentials'] = "true"
+    
     img = imgs[0]
     content_type "image/#{img.format.downcase}"
     #img.quality = 60 rescue nil

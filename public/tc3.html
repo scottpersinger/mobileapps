@@ -31,6 +31,10 @@
             console.log("CACHE ERROR");
             logs.push("CACHE ERROR");
           });
+          
+          window.applicationCache.addEventListener('updateready', function(e) {
+            window.applicationCache.update();
+          });
         </script>
         
         <script src="jquery-1.5.1.min.js" type="text/javascript" charset="utf-8"></script>
@@ -104,7 +108,7 @@
               color:#999;
               position:absolute;
               right:4px;
-              bottom:4px;
+              bottom:1px;
             }
             
             #story-content p {
@@ -287,8 +291,9 @@
           $(function() {
             setTimeout(function() {
               console.log("Setting margin");
-              $('#jqt').css('margin', '30px');
+              $(document.body).css('background-image', 'url(iphone.png)');
             }, 200);
+            $('#jqt').css({width:320, height:480, 'margin-left' :'33px', 'margin-top': '143px', overflow:'hidden'});
             
             
             jQT.barsSettings.autoLoad_iScroll = false;

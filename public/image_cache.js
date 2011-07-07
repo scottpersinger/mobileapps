@@ -7,6 +7,11 @@
 var ImageCache = {
   cache : function(img, width, height) {
     var key = img.src;
+    if (!key.match(new RegExp("https?://" + window.location.hostname))) {
+      console.log("Can't cache image from different domain: " + key);
+      return;
+    }
+    
     width = (width || img.width) * 2;
     height = (height || img.height) * 2;
     if (key.match(/^http:/) && !localStorage.getItem('key')) {

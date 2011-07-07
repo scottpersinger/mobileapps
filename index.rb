@@ -2,6 +2,10 @@ require 'sinatra'
 require 'rest-open-uri'
 require "RMagick"
 
+configure :development do
+  set :manifest, nil
+end
+
 configure :production do
   last_mtime = (Dir.glob(File.join(settings.public, "*.html")) + Dir.glob(File.join(settings.public, "*.js"))).collect {|f| File.mtime(f).to_i}.max
   set :manifest, last_mtime.to_s

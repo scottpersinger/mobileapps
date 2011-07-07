@@ -2,17 +2,22 @@ require 'sinatra'
 require 'rest-open-uri'
 require "RMagick"
 
+configure :production do
+  last_mtime = (Dir.glob(File.join(settings.public, "*.html")) + Dir.glob(File.join(settings.public, "*.js"))).collect {|f| File.mtime(f).to_i}.max
+  set :manifest, last_mtime.to_s
+end
+
 get '/' do
   File.read('public/index.html')
 end
 
 get '/cache.manifest' do
-  puts "Sintra cache manifest"
+  puts "Sintra cache manifest, manifest settting: #{settings.manifest}"
   contents = File.read('public/cache.manifest.source')
-  if ENV['DEBUG']
-    puts "Rotating manifest"
-    contents.gsub!(/# Version: [\d\.]+/,"# Version: #{Time.now.to_i / 10}")
-  end
+  
+  puts "Rotating manifest"
+  key = settings.manifest || (Time.now.to_i / 10).to_s
+  contents.gsub!(/# Version: [\d\.]+/,"# Version: #{key}")
 
   content_type 'text/cache-manifest', :charset => 'utf-8'
   contents

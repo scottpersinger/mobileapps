@@ -136,7 +136,7 @@ function BlogReader(db) {
     var uid = Utils.hash(url, 999999);
     db.select_all('stories', {where: {uid: uid}}, function(results) {
       if (results.length > 0) {
-        callback(results[0].body);
+        callback(results[0].body); 
       } else {
         $.post(scrapeUrl,
             {url: url, body: "return $('#singlentry').html()" },

@@ -5,7 +5,7 @@
  */
 
 var ImageCache = {
-  cache : function(img) {
+  cache : function(img, width, height) {
     var key = img.src;
     if (key.match(/^http:/) && !localStorage.getItem('key')) {
       console.log("Caching: " + key);
@@ -20,7 +20,7 @@ var ImageCache = {
       canv.style.width = img.width;
       canv.style.height = img.height;
       var context = canv.getContext('2d');
-      context.drawImage(img, 0, 0);
+      context.drawImage(img, 0, 0, width || img.width, height || img.height);
     
       var dataURL = canv.toDataURL();
       localStorage.setItem(key, dataURL);

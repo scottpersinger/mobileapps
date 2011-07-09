@@ -1,0 +1,57 @@
+/*
+ @@@@@@@@@@@@@>      @@@@@@@@@@>
+ @>    @@@>  @>      @>         
+ @>     @>   @>      @@@@@@@@@@>
+ @>          @>               @>
+ @>          @>               @>
+ @>          @>      @@@@@@@@@>       
+
+ (c) Scott Persinger 2011. See LICENSE.txt for license.
+ 
+ M5 simulator css
+*/
+
+#m5-simpanel {
+  float:right;
+  margin:10px;
+  width:300px;
+  height:500px;
+  border:2px solid #CCC;
+  background:#EEE;
+  overflow:hidden;
+  padding:10px 10px 10px 0px;
+  position:relative;
+  line-height:21px;
+}
+
+#m5-simpanel button {
+  padding:6px 20px;
+  -webkit-border-radius:3px;
+  border:1px solid #333;
+  font-size:14px;
+  font-family:Tahoma;
+  font-weight:bold;
+  color:#333;
+  margin-bottom:8px;
+}
+
+#m5-simpanel button:active {
+  background:#999;
+}
+
+#m5-simpanel .m5-log {
+  line-height:12px;
+  width:95%;
+  border:1px solid #666;
+  font-size:10px;
+  height:250px;
+  position:absolute;
+  bottom:2px;
+  left:2px;
+  overflow:scroll;
+}
+
+#m5-simpanel .m5-header {
+  background:#AAA;
+  border-bottom:1px solid #222;
+}

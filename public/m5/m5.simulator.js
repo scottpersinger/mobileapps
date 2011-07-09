@@ -15,6 +15,9 @@
 $(
 function() {
   function debug(msg) {
+    if (msg instanceof Array) {
+        msg = msg.join(" ");
+    }
     $('#m5-simpanel .m5-log').append(msg + "\n")
   }
   M5.addConsoleListener(debug);
@@ -39,7 +42,7 @@ function() {
     return '<div><div id="m5-simpanel">' +
       '<div>Environment: ' + M5.env + '</div>' +
       '<div>UserAgent: ' + navigator.userAgent + '</div>' +
-      '<button class="m5-reload">Reload App</button><br />' + 
+      '<button class="m5-reload">Reload App</button><button class="m5-clear">Clear Log</button><br />' + 
       '<button class="m5-update">Update App Cache</button><br />' + 
       '<button class="m5-reset">Clear Local Storage</button><br />' +
       '<button class="m5-test1">Test iframe</button><br />' +
@@ -67,6 +70,9 @@ function() {
   });
   $('#m5-simpanel .m5-update').click(function() {
     window.applicationCache.update();
+  });
+  $('#m5-simpanel .m5-clear').click(function() {
+    $('#m5-simpanel .m5-log').html('');
   });
   $('#m5-simpanel .m5-reset').click(function() {
     if (typeof(SimpleStorage) == "object") {

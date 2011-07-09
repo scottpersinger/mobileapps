@@ -34,7 +34,7 @@ function() {
   }
   
   function loadInline() {
-    $('#jqt').append('<div id="m5-sim"><div class="toolbar"><h1>Debug</h1><a class="button goback" href="#">Close</a></div>' +
+    $('#jqt').append('<div id="m5-sim" style="display:none"><div class="toolbar"><h1>Debug</h1><a class="button goback" href="#">Close</a></div>' +
       build_panel() + '</div>');
   }
   
@@ -54,7 +54,7 @@ function() {
 
   // Immediate code
 
-  if (M5.settings.inline_sim || navigator.userAgent.match(/iPhone/)) {
+  if (M5.settings.inline_sim || M5.iPhone) {
     loadInline();
   } else {
     loadBig();

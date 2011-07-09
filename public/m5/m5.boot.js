@@ -19,6 +19,8 @@
     M5.production => true if in production environment
     M5.development => true if in production environment
     M5.testing => true if in production environment
+    M5.iPhone => true if running on an iPhone
+    M5.Android => true if running on an Android device
 */
 
 M5 = (function() {
@@ -103,6 +105,8 @@ M5 = (function() {
   , false);
 
   return {
+    iPhone: window.navigator.userAgent.match(/iPhone/),
+    Android: window.navigator.userAgent.match(/Android/),
     setUpdateListener: setUpdateListener,
     silent_update: silent_update,
     m5_log: m5_log,

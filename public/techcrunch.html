@@ -1,96 +1,64 @@
-<!DOCTYPE html> 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
 <html> 
 	<head> 
-	  <meta name="viewport" content="width=device-width, initial-scale=1">
 	  
 	<title>TechCrunch Mobile</title> 
-	<link rel="stylesheet" href="../jquery.mobile/jquery.mobile-1.0b1.min.css" />
-	<script type="text/javascript" src="../jquery.mobile/jquery-1.6.1.min.js"></script>
-	<script type="text/javascript" src="../jquery.mobile/jquery.mobile-1.0b1.min.js"></script>
 </head> 
 <body> 
 
       <div id="home" data-role="page" data-theme="b">
           <div data-role="header">
               <h1>Techcrunch</h1>
-              <a href="#info" class="button leftButton flip" data-transition="flip">Info</a>
+              <a href="/info" class="button leftButton flip" data-transition="flip">Info</a>
               <a href="#" class="button icon d-refresh"></a>
           </div>
           <div id="stories" data-role="content">
             <ul data-role="listview" data-theme="g">
             </ul>
           </div>
+          
+          <a href="#" onclick="showFrame(); return false">Show frame</a>
+          
+          <OBJECT style = "width: 500px; height: 300px;"
+                    type = "text/HTML" data = "http://google.com">
+            </OBJECT>
+          
       </div>
-      
-      <div id="fullstory" data-role="page">
-        <div data-role="header">
-            <h1 id="story-title"></h1>
-            <a href="#" data-rel="back">Back</a>
-        </div>
-        <div id="story-content" data-role="content">
-        </div>
-      </div>
-        
-      <div id="info" data-role="page">
-        <div data-role="header">
-            <h1>About</h1>
-            <a href="#home" data-rel="back">Back</a>
-        </div>
-        <div class="info" data-role="content">
-          <h2>Techcrunch HTML5 Reader</h2>
-        </div>
-      </div>
-        
-      <script src="scrape.js" type="text/javascript"></script>
+
       <script>
-        Storage.prototype.setObject = function(key, value) {
-            this.setItem(key, JSON.stringify(value));
-        }
-
-        Storage.prototype.getObject = function(key) {
-            return JSON.parse(this.getItem(key));
-        }
+        var enableBuster = false;
         
-        function loadPosts(items) {
-          var posts = localStorage.getObject('posts') || [];
-          var urls = localStorage.getObject('urls') || {};
-
-          $.each(items.reverse(), function() {
-            if (!urls[this.url]) {
-              posts.push(this);
-              urls[this.url] = 'x';
-            }
-          });
-          localStorage.setObject('urls', urls);
-          localStorage.setObject('posts', posts);
-          var lastDate = null;
+        function showFrame() {
+          var f = document.createElement("object");
+          f.data = "http://google.com";
+          f.type = "text/html";
+          f.width = "400px";
+          f.height = "300px";
           
-          var postsDiv = $('#stories ul');
+          enableBuster = true;
+          document.body.appendChild(f);
+          setTimeout(function() {
+            enableBuster = false;
+          }, 3000);
           
-          $.each(posts, function() {
-            console.log(this.date + " - " + this.title);
-            if (this.date != lastDate) {
-              lastDate = this.date;
-              postsDiv.append('<li data-role="list-divider">' + this.date + '</li>');
-            }
-            postsDiv.append('<li><a>' + this.title + '</a></li>');
-            var story = this;
-            $('#stories ul a:last').click(function() {
-              $('#story-title').html(story.title);
-              $("#story-content").html(story.body);
-              $.mobile.changePage('#fullstory');
-            });
-          });
-          
+          return false;
         }
         
-        $(function() {
-          loadPosts([]);
-          load_tc_home(loadPosts);
-        })
-        
-      </script>
+        var prevent_bust = 0;
 
+         // Event handler to catch execution of the busting script.
+         window.onbeforeunload = function() { prevent_bust++ };
 
+         // Continuously monitor whether busting script has fired.
+         setInterval(function() {
+           if (enableBuster && prevent_bust > 0) {  // Yes: it has fired. 
+             prevent_bust -= 2;     // Avoid further action.
+             // Get a 'No Content' status which keeps us on the same page.
+             window.top.location = 'http://simple-cloud-843.herokuapp.com/nothing';
+           }
+         }, 1);
+       </script>
+       
+       
 </body>
 </html>

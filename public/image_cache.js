@@ -5,10 +5,15 @@
  */
 
 var ImageCache = {
+  warning_printed: false,
+  
   cache : function(img, width, height) {
     var key = img.src;
     if (!key.match(new RegExp("https?://" + window.location.hostname))) {
-      console.log("Can't cache image from different domain: " + key);
+      if (!ImageCache.warning_printed) {
+        console.log("Can't cache image from different domain: " + key);
+        ImageCache.warning_printed = true;
+      }
       return;
     }
     

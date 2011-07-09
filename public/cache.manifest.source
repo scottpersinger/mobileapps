@@ -29,7 +29,8 @@ jqtouch-dz/themes/apple/img/whiteButton.png
 jqtouch-dz/themes/apple/img/on_off.png
 indicator.gif
 techcrunchapp.js
-storage.js
+m5/m5.boot.js
+m5/m5.simplestorage.js
 image_cache.js
 jquery-1.5.1.min.js
 jqtouch-dz/jqtouch/jqtouch.js
@@ -38,6 +39,7 @@ jqtouch-dz/extensions/jqt.offline.js
 jqtouch-dz/extensions/jqt.bars/iscroll-lite-min.js
 
 NETWORK:
+m5/m5_simulator.js
 http://localhost:8080
 http://localhost:8080/scrape
 http://simple-cloud-843.herokuapp.com/

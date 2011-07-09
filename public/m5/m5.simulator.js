@@ -12,8 +12,7 @@
  
 */
 
-$(
-function() {
+M5.addTouchReady(function() {
   function debug(msg) {
     if (msg instanceof Array) {
         msg = msg.join(" ");
@@ -42,25 +41,25 @@ function() {
     return '<div><div id="m5-simpanel">' +
       '<div>Environment: ' + M5.env + '</div>' +
       '<div>UserAgent: ' + navigator.userAgent + '</div>' +
-      '<button class="m5-reload">Reload App</button><button class="m5-clear">Clear Log</button><br />' + 
-      '<button class="m5-update">Update App Cache</button><br />' + 
-      '<button class="m5-reset">Clear Local Storage</button><br />' +
-      '<button class="m5-test1">Test iframe</button><br />' +
+      '<button class="m5-reload touch">Reload App</button><button class="m5-clear">Clear Log</button><br />' + 
+      '<button class="m5-update touch">Update App Cache</button><br />' + 
+      '<button class="m5-reset touch">Clear Local Storage</button><br />' +
+      '<button class="m5-test1 touch">Test iframe</button><br />' +
       '<div class="m5-header">Log</div>' +
-      '<textarea class="m5-log"></textarea>' +
+      '<textarea class="m5-log touch"></textarea>' +
       '</div></div>';
   }
 
 
   // Immediate code
 
-  if (M5.settings.inline_sim || M5.iPhone) {
+  if (M5.settings.inline_sim || M5.iPhone || M5.Android) {
     loadInline();
   } else {
     loadBig();
   }
     
-  $('#m5-simpanel .m5-reload').click(function() {
+  $('#m5-simpanel .m5-reload').bind('click touchstart', function() {
     M5.setUpdateListener(function() {
       M5.silent_update(false);
       window.location.reload();
@@ -71,7 +70,7 @@ function() {
   $('#m5-simpanel .m5-update').click(function() {
     window.applicationCache.update();
   });
-  $('#m5-simpanel .m5-clear').click(function() {
+  $('#m5-simpanel .m5-clear').bind('click touchstart', function() {
     $('#m5-simpanel .m5-log').html('');
   });
   $('#m5-simpanel .m5-reset').click(function() {

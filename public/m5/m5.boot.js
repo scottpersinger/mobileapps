@@ -9,7 +9,8 @@
  (c) Scott Persinger 2011. See LICENSE.txt for license.
   
   Boot script for M5 apps.
-  
+
+    M5.addTouchReady - Register callback to run when touch events are available
     M5.silent_update(flag) => call with true to update cached app without prompting user
     M5.settings => hash of arbitrary app settings
     M5.orig_console => holds the native value of the 'console' object
@@ -38,7 +39,9 @@ M5 = (function() {
   var dev_env = false;
   var test_env = false;
   var environment = 'production';
-
+  var touchReadyCallbacks = [];
+  var touchReadyRan = false;
+  
   function set_env(val) {
     environment = val;
     M5.env = val;
@@ -88,6 +91,28 @@ M5 = (function() {
     }
   }
   
+  function addTouchReady(callback) {
+    if ($.fn.tap || touchReadyRan) {
+      //can go immediately
+      callback();
+    } else {
+      touchReadyCallbacks.push(callback);
+    }
+  }
+  
+  function runTouchReadyCallbacks() {
+    if (!touchReadyRan) {
+      if ($.fn.tap) {
+        touchReadyRan = true;
+        $.each(touchReadyCallbacks, function() {this()});
+      } else {
+        setTimeout(runTouchReadyCallbacks, 20);
+      }
+    }
+  }
+  
+  $(document).bind('ready', runTouchReadyCallbacks);
+  
   window.applicationCache.addEventListener('updateready', function(e){
         var cache = window.applicationCache;
         
@@ -114,6 +139,7 @@ M5 = (function() {
     addConsoleListener: addConsoleListener,
     production: prod_env,
     development: dev_env,
+    addTouchReady: addTouchReady,
     require: require,
     testing: test_env,
     set_env: set_env,

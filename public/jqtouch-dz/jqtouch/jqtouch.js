@@ -784,7 +784,6 @@
 
         // Document ready stuff
         $(document).ready(function() {
-
             // Store some properties in the jQuery support object
             $.support.animationEvents = supportForAnimationEvents();
             $.support.cssMatrix = supportForCssMatrix();

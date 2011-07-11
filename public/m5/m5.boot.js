@@ -139,7 +139,7 @@ M5 = (function() {
     addConsoleListener: addConsoleListener,
     production: prod_env,
     development: dev_env,
-    addTouchReady: addTouchReady,
+    onTouchReady: addTouchReady,
     require: require,
     testing: test_env,
     set_env: set_env,

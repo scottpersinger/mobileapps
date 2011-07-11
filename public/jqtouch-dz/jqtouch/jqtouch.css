@@ -47,7 +47,7 @@ body {
 }
 
 #jqt .in, #jqt .out {
-    -webkit-animation-duration: 250ms;
+    -webkit-animation-duration: 450ms;
     -webkit-animation-fill-mode: both;
     -webkit-animation-timing-function: ease-in-out;
 }

@@ -36,7 +36,7 @@
             window.applicationCache.update();
           });
         </script>
-        
+        <!--script src="http://jsconsole.com/remote.js?CECAF1FD-E831-401A-B479-B09BDE3E62EA"></script-->
         <script src="jquery-1.5.1.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="jqtouch-dz/jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
         <!-- for scrolling -->
@@ -305,6 +305,7 @@
                 $('#story-content').html('<p>' + body + '</p>');
                 $('#story-content img, #story-content script, #story-content noscript').remove();
                 $("#story-content").prepend(imgTag);
+                $('#story-content a').attr('target', "_blank");
                 jQT.setPageHeight();
                 link_subpages();
               });
@@ -354,6 +355,11 @@
               hide_message();
             });
 
+            $('#story-content').bind('touchmove', function(e) {
+              console.log("Touch move! ");
+              console.log(e);
+            });
+            
             $('#fullstory').bind('pageAnimationEnd', function(e, info){
               if (info.direction == "out") {
                 $('#fullstory .s-scrollwrapper').data('iscroll').scrollTo(0,0,0);

@@ -15,6 +15,11 @@ get '/' do
   File.read('public/index.html')
 end
 
+get '/tc3dev' do
+  content_type "text/html"
+  File.read("public/tc3.html").gsub(/manifest=\".*?\"/,'')
+end
+
 get '/cache.manifest' do
   puts "Sintra cache manifest, manifest settting: #{settings.manifest}"
   contents = File.read('public/cache.manifest.source')

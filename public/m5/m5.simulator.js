@@ -12,7 +12,7 @@
  
 */
 
-M5.addTouchReady(function() {
+M5.onTouchReady(function() {
   function debug(msg) {
     if (msg instanceof Array) {
         msg = msg.join(" ");

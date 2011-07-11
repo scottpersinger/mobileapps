@@ -734,7 +734,7 @@
                 var absX = Math.abs(deltaX);
                 var absY = Math.abs(deltaY);
                 var direction;
-                if (absX > absY && (absX > 35) && deltaT < 1000) {
+                if (absX > absY && (absX > 15) && deltaT < 1000) {
                     if (deltaX < 0) {
                         direction = 'left';
                     } else {

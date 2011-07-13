@@ -29,6 +29,8 @@ get '/cache.manifest' do
   contents.gsub!(/# Version: [\d\.]+/,"# Version: #{key}")
 
   content_type 'text/cache-manifest', :charset => 'utf-8'
+  response.headers['Content-Control'] = 'max-age=38389999'
+  
   contents
 end
 

@@ -33,7 +33,7 @@ M5.onTouchReady(function() {
   }
   
   function loadInline() {
-    $('#jqt').append('<div id="m5-sim" style="display:none"><div class="toolbar"><h1>Debug</h1><a class="button goback" href="#">Close</a></div>' +
+    $('#jqt').append('<div id="m5-sim" style=""><div class="toolbar"><h1>Debug</h1><a class="button goback" href="#">Close</a></div>' +
       build_panel() + '</div>');
   }
   
@@ -60,6 +60,7 @@ M5.onTouchReady(function() {
   }
     
   $('#m5-simpanel .m5-reload').bind('click touchstart', function() {
+    alert("Reloading app");
     M5.setUpdateListener(function() {
       M5.silent_update(false);
       window.location.reload();

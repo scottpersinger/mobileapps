@@ -21,6 +21,7 @@
         <script>
           var logs = [];
           window.applicationCache.addEventListener('checking', function(e) {
+            e.preventDefault();
             console.log("CHECKING UPDATE");
             logs.push("CHECKING UPDATE");
             //e.preventDefault();
